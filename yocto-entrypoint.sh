@@ -199,9 +199,21 @@ main()
         echo "build-container command accepts only 1 argument"
         show_usage
       fi
-      cd "${DATADIR}/yocto"
-      source sources/poky/oe-init-build-env build
+      cd "${DATADIR}/yocto/build"
+      source ../sources/poky/oe-init-build-env ../build
+      bitbake-layers add-layer ../sources/meta-fullmetalupdate-demo/meta-${1}
       DISTRO=fullmetalupdate-containers bitbake $1 -k
+      ;;
+
+    remove-container)
+      shift; set -- "$@"
+      if [ $# -ne 1 ]; then
+        echo "remove-container command accepts only 1 argument"
+        show_usage
+      fi
+      cd "${DATADIR}/yocto/build"
+      source ../sources/poky/oe-init-build-env ../build
+      bitbake-layers remove-layer ../sources/meta-fullmetalupdate-demo/meta-${1}
       ;;
 
     package-wic)
